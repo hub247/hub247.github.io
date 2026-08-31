@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teste HTML + JSON</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body{font-family:"Segoe UI",Arial,sans-serif;background:#f5f7fa;padding:30px;margin:0}
+.card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,.1);max-width:1200px;margin:auto}
+h1{color:#003B7A}.grafico-container{height:500px}#status{margin-top:15px;font-size:14px;color:#666}
+</style>
+</head>
+<body>
+<div class="card">
+<h1>Volume Diário</h1>
+<div class="grafico-container"><canvas id="grafico"></canvas></div>
+<div id="status">Tentando carregar dados.json...</div>
+</div>
+<script>
+const status=document.getElementById("status");
+fetch("https://araempreendimentoscombr.sharepoint.com/sites/FS/_layouts/15/download.aspx?UniqueId=35cfb08dfea343b2ada0bc8fb295f8d9&e=5Lc44k")
+
+.then(function(response){if(!response.ok){throw new Error("Erro HTTP: "+response.status)}return response.json()})
+.then(function(dados){
+ status.textContent="JSON carregado com sucesso. Registros: "+dados.length;
+ const labels=dados.map(function(item){return item.dia});
+ const valores=dados.map(function(item){return Number(item.volume)});
+ new Chart(document.getElementById("grafico"),{
+  type:"line",
+  data:{labels:labels,datasets:[{label:"Volume",data:valores,borderColor:"#003B7A",backgroundColor:"rgba(0,59,122,0.15)",borderWidth:3,fill:true,tension:.3,pointRadius:5,pointBackgroundColor:"#003B7A"}]},
+  options:{responsive:true,maintainAspectRatio:false,scales:{y:{beginAtZero:true}}}
+ });
+})
+.catch(function(erro){console.error("ERRO:",erro);status.textContent="ERRO AO CARREGAR JSON: "+erro.message;status.style.color="#b42318"});
+</script>
+</body>
+</html>
