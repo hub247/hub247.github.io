@@ -19,8 +19,7 @@ h1{color:#003B7A}.grafico-container{height:500px}#status{margin-top:15px;font-si
 </div>
 <script>
 const status=document.getElementById("status");
-fetch("https://araempreendimentoscombr.sharepoint.com/sites/FS/_layouts/15/download.aspx?UniqueId=35cfb08dfea343b2ada0bc8fb295f8d9&e=5Lc44k")
-
+fetch("dados.json")
 .then(function(response){if(!response.ok){throw new Error("Erro HTTP: "+response.status)}return response.json()})
 .then(function(dados){
  status.textContent="JSON carregado com sucesso. Registros: "+dados.length;
